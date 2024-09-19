@@ -1,24 +1,3 @@
-<html>
-<center>
-<div id="login">
-  <div>
-    <h id="li">LOGIN</h>
-    <form>
-      <input id="un" placeholder="Username" required>
-      <input id="pw" placeholder="Password" required>
-    </form>
-  </div>
-  
-  <div>
-    <button id="lib" onclick="test()">LOGIN</buton>
-  </div>
-</div>
-<div>
-  <p id="ac">Account Not Registered</p>
-</div>
-</center>
-</html>
-
 <style>
   #login {
     position: relative;
@@ -52,5 +31,31 @@
     color: red;
     top: 5.2em;
     opacity: 0;
-    }
+  }
 </style>
+
+<center>
+<div id="login">
+  <div>
+    <h id="li">LOGIN</h>
+    <form>
+      <input id="un" placeholder="Username" required>
+      <input id="pw" placeholder="Password" required>
+    </form>
+  </div>
+  
+  <div>
+    <button id="lib" onclick="test()">LOGIN</buton>
+  </div>
+</div>
+<div>
+  <p id="ac">Account Not Registered</p>
+</div>
+</center>
+
+<script>
+  function test() {
+    let a = document.getElementById("ac");
+    a.style.opacity = 1;
+  }
+</script>
