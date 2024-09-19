@@ -1,33 +1,18 @@
-<style>
-  #n, #y{
-    position: relative;
-    font-size: 20px;
-  }
-  #n:hover {
-    background-color: red;
-    border: none;
-  }
-</style>
-<div>
-  <h1 id="k">I am handsome?</h1>
+<center>
+<div id="login">
+  <div>
+    <h id="li">LOGIN</h>
+    <form>
+      <input id="un" placeholder="Username" required>
+      <input id="pw" placeholder="Password" required>
+    </form>
+  </div>
   
-  <button id="y" onclick="fn()">Yes</button>
-  
-  <button id="n" onclick="fx()">NO</buttton>
+  <div>
+    <button id="lib" onclick="test()">LOGIN</buton>
+  </div>
 </div>
-
 <div>
-  <script>
-    function fx(){
-        const btn = document.getElementById('n');
-        const x = Math.floor(Math.random() * 200) + 1; // Adjusted the random range to keep the button within the container
-        const y = Math.floor(Math.random() * 200) + 1; // Adjusted the random range to keep the button within the container
-        btn.style.top = x + "px";
-        btn.style.left = y + "px";
-    }
-    
-    function fn() {
-      let a = document.getElementById("k").innerHTML = "ok tangina mo";
-    }
-  </script>
+  <p id="ac">Account Not Registered</p>
 </div>
+</center>
