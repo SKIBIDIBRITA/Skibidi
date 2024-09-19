@@ -1,0 +1,9 @@
+
+  #n, #y{
+    position: relative;
+    font-size: 20px;
+  }
+  #n:hover {
+    background-color: red;
+    border: none;
+  }
