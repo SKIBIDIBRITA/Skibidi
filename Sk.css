@@ -1,9 +1,33 @@
-
-  #n, #y{
+#login {
     position: relative;
+    background-color: white;
+    border-radius: 50px;
+    border: black;
+    top: 10em;
+  }
+  #li {
     font-size: 20px;
   }
-  #n:hover {
-    background-color: red;
-    border: none;
+  #lib {
+    background-color: #90EE90;
+    border-style: none;
+    width: 100%;
+    padding: 10px 20px;
+    margin: 1px 0;
+    border: 1px solid black;
+    box-sizing: border-box;
+  }
+  #un, #pw {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  #ac {
+    position: relative;
+    color: red;
+    top: 5.2em;
+    opacity: 0;
   }
