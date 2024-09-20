@@ -1,151 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriting Effect</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #typewriter {
+            font-size: 24px;
+            border-right: 2px solid black;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        #nameInput {
+            display: none;
+            margin-top: 20px;
+            font-size: 24px;
+            border: none; /* No border */
+            outline: none; /* Remove outline */
+            border-bottom: 1px solid black; /* Just an underline */
+            padding: 5px;
+            width: 200px; /* Fixed width */
+            background-color: #f0f0f0; /* Match background */
+        }
+
+        #greeting {
+            font-size: 32px; /* Larger greeting */
+            margin-top: 20px;
+        }
+
+        #loading {
+            font-size: 20px;
+            margin-top: 10px;
+            opacity: 0; /* Initially hidden */
+            transform: translateY(-20px); /* Start slightly above */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition */
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+    </style>
 </head>
+<body>
 
-<style>
-  #container {
-    overflow: hidden;
-  }
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-color: #494848;
-    overflow: hidden;
-  }
-  #login {
-    background-color: #636363;
-    color: white;
-    width: 300px;
-    padding: 30px 10px;
-    border-radius: 30px;
-  }
-  #login h1 {
-    font-size: 36px;
-    text-align: center;
-  }
-  #login #input-box {
-    width: 100%;
-    height: 50px;
-    margin: 30px 0;
-  }
-  #input-box input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    outline: none;
-    border: none;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 30px;
-    font-size: 16px;
-    color: white;
-    padding: 20px 45px 20px 20px;
-  }
-  #input-box input::placeholder {
-    color: white;
-  }
+    <div id="typewriter"></div>
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+    <div id="greeting"></div>
+    <div id="loading"></div>
 
-  #u1 {
-    position: relative;
-    bottom: 2.2em;
-    left: 17em;
-  }
-  #p1 {
-    position: relative;
-    bottom: 2.2em;
-    left: 17em;
-  }
-  
-  #login #forgot {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.45px;
-    left: 12.5em;
-    bottom: 1.2em;
-  }
-  #forgot a {
-    color: white;
-    text-decoration: none;
-  }
-  #forgot:hover {
-    text-decoration: underline;
-  }
-  #lb {
-    position: relative;
-    bottom: 5em;
-    width: 100%;
-    height: 45px;
-    background: white;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-  }
-  #register p {
-    position: relative;
-    font-size: 14.5px;
-    text-align: center;
-    margin-top: 20px;
-    top: 29px;
-    right: 45px;
-  }
-  #register a {
-    position: relative;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    bottom: 4.2px;
-    left: 12em;
-  }
-  #register {
-    position: relative;
-    top: 1.5em;
-  }
-  #register a:hover {
-    text-decoration: underline;
-  }
-</style>
+    <script>
+        const textArray = ["Hello", "What is your name?"];
+        let currentTextIndex = 0;
+        let currentCharIndex = 0;
+        const typewriterElement = document.getElementById('typewriter');
+        const nameInput = document.getElementById('nameInput');
+        const greetingElement = document.getElementById('greeting');
+        const loadingElement = document.getElementById('loading');
+        let typingInterval;
 
-<html>
-  <div id="container">
-    <div id="login">
-      <form action="">
-        <h1>Login</h1>
-        
-        <div id="input-box">
-           <input type="text" id="user" placeholder="Username" required>
-           <i class='bx bxs-user' id="u1"></i>
-        </div>
-        
-        <div id="input-box">
-           <input type="password" id="pw" placeholder="Password" required>
-           <i class='bx bxs-lock-alt' id="p1" ></i>
-        </div>
-        
-        <div id="remember">
-          <input type="checkbox">Remember Me
-        </div>
-        
-        <div id="forgot">
-          <a href="">Forgot Password</a>
-        </div>
-        
-        <div id="register">
-          <p>Dont have an account?</p>
-          <a href="https://skibidibrita.github.io/Skibidi/dop.html">Register</a>
-        </div>
-        
-        <button onclick="goto()" id="lb">LOGIN</button>
-      </form>
-    </div>
-  </div>
+        function type() {
+            typingInterval = setInterval(() => {
+                if (currentCharIndex < textArray[currentTextIndex].length) {
+                    typewriterElement.innerHTML += textArray[currentTextIndex].charAt(currentCharIndex);
+                    currentCharIndex++;
+                } else {
+                    clearInterval(typingInterval);
+                    setTimeout(erase, 1000); // Pause before erasing
+                }
+            }, 100); // Faster typing speed
+        }
+
+        function erase() {
+            typingInterval = setInterval(() => {
+                if (currentCharIndex > 0) {
+                    typewriterElement.innerHTML = textArray[currentTextIndex].substring(0, currentCharIndex - 1);
+                    currentCharIndex--;
+                } else {
+                    clearInterval(typingInterval);
+                    if (currentTextIndex === 1) {
+                        nameInput.style.display = 'block';
+                        nameInput.focus();
+                        typewriterElement.innerHTML = ''; // Clear typewriter text
+                    }
+                    currentTextIndex++;
+                    setTimeout(type, 500); // Pause before typing next text
+                }
+            }, 70); // Faster erase speed
+        }
+
+        let dotCount = 0;
+        let loadingInterval;
+
+        function startLoading() {
+            loadingElement.style.opacity = '1'; // Fade in
+            loadingElement.style.transform = 'translateY(0)'; // Move down into view
+            loadingElement.innerHTML = 'Getting Information';
+            loadingInterval = setInterval(() => {
+                dotCount = (dotCount + 1) % 4; // Reset after 3 dots
+                loadingElement.innerHTML = 'Getting Information' + '.'.repeat(dotCount);
+            }, 500); // Add a dot every 500ms
+
+            // Redirect after 5 seconds
+            setTimeout(() => {
+                clearInterval(loadingInterval);
+                window.location.href = "https://example.com"; // Change this to your desired URL
+            }, 5000);
+        }
+
+        function greetUser(name) {
+            const greetingText = `Hello ${name}`;
+            greetingElement.innerHTML = ''; // Clear previous greeting
+            currentCharIndex = 0;
+
+            // Type out the greeting
+            const typingInterval = setInterval(() => {
+                if (currentCharIndex < greetingText.length) {
+                    greetingElement.innerHTML += greetingText.charAt(currentCharIndex);
+                    currentCharIndex++;
+                } else {
+                    clearInterval(typingInterval);
+                    // Start loading after greeting
+                    startLoading();
+                }
+            }, 100); // Faster typing speed
+            
+            // Hide the typewriter and input after greeting is done
+            setTimeout(() => {
+                typewriterElement.style.display = 'none';
+                nameInput.style.display = 'none';
+            }, greetingText.length * 100 + 500); // Wait for greeting to finish
+        }
+
+        // Start the typewriter effect on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(type, 500); // Initial delay
+            nameInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const name = nameInput.value;
+                    nameInput.style.display = 'none';
+                    greetUser(name);
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
-
-<script>
-  function goto() {
-    alert("ACCOUNT NOT REGISTERED!");
-  }
-</script>
