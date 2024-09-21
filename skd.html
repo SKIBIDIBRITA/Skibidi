@@ -3,159 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typewriting Effect</title>
+    <title>User Profile</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 4vw;
+            font-weight: bold;
+            position: absolute;
+            top: 4vw;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            padding: 0.5vw;
+        }
+
+        .hamburger {
+            width: 7vw;
+            height: 7vw;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            margin: 2vw;
+            position: absolute;
+            top: 4vw;
+            left: 5vw;
+            background: transparent;
+            z-index: 2;
+        }
+
+        .hamburger .line {
+            width: 100%;
+            height: 0.6vh;
+            background-color: black;
+            transition: all 0.3s ease;
+        }
+
+        .menu-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50vw;
+            height: 100vh;
+            border: 2px solid #333;
+            padding: 4vw;
+            background-color: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .menu-container.show {
+            transform: translateX(0);
+        }
+
+        .menu-list {
+            list-style: none;
+            margin-top: 2vh;
+        }
+
+        .menu-list li {
+            margin: 1.5vh 0;
+        }
+
+        .menu-list li a {
+            text-decoration: none;
+            color: black;
+            font-size: 3vw;
+            padding: 1vh 1.5vw;
+            display: inline-block;
+        }
+
+        .section {
+            display: none;
+            padding: 10vw 4vw 4vw;
+            position: relative;
+            z-index: 1;
+            height: calc(100% - 8vh);
+            overflow: auto;
+        }
+
+        .section.show {
+            display: block;
+        }
+
+        .profile {
+            text-align: center;
+            background-color: white;
+            padding: 2vw;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 4vh;
+        }
+
+        .profile h2 {
+            margin-bottom: 1vh;
+        }
+
+        .profile-info {
+            font-size: 3vw;
+            margin: 1vh 0;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+            font-size: 2.5vw;
+            color: blue;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            z-index: 2000;
         }
 
-        #typewriter {
-            font-size: 24px;
-            border-right: 2px solid black;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: blink-caret 0.75s step-end infinite;
+        .modal-content {
+            background: white;
+            padding: 2vw;
+            border-radius: 8px;
+            text-align: center;
         }
 
-        #nameInput {
-            display: none;
-            margin-top: 20px;
-            font-size: 24px;
-            border: none; /* No border */
-            outline: none; /* Remove outline */
-            border-bottom: 1px solid black; /* Just an underline */
-            padding: 5px;
-            width: 200px; /* Fixed width */
-            background-color: #f0f0f0; /* Match background */
+        .modal input {
+            padding: 1vh;
+            margin: 1vh 0;
+            width: 80%;
         }
 
-        #greeting {
-            font-size: 32px; /* Larger greeting */
-            margin-top: 20px;
+        .modal button {
+            padding: 1vh 2vw;
+            margin-top: 1vh;
         }
 
-        #loading {
-            font-size: 20px;
-            margin-top: 10px;
-            opacity: 0; /* Initially hidden */
-            transform: translateY(-20px); /* Start slightly above */
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition */
+        @media (min-width: 768px) {
+            .heading {
+                font-size: 3.5vw;
+                top: 3vw;
+            }
+
+            .hamburger {
+                width: 6vw;
+                height: 6vw;
+                top: 3vw;
+            }
+
+            .menu-container {
+                width: 45vw;
+                padding: 3vw;
+            }
+
+            .menu-list li a {
+                font-size: 2.5vw;
+            }
+
+            .section {
+                padding: 8vw 3vw 3vw;
+            }
+
+            .profile-info {
+                font-size: 2vw;
+            }
+
+            .edit-icon {
+                font-size: 2vw;
+            }
         }
 
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: black; }
+        @media (max-width: 767px) {
+            .heading {
+                font-size: 5vw;
+            }
+
+            .hamburger {
+                width: 8vw;
+                height: 8vw;
+            }
+
+            .menu-container {
+                width: 60vw;
+            }
+
+            .menu-list li a {
+                font-size: 3.5vw;
+            }
+
+            .section {
+                padding: 12vw 5vw 5vw;
+            }
+
+            .profile-info {
+                font-size: 3.5vw;
+            }
+
+            .edit-icon {
+                font-size: 3vw;
+            }
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 2vw;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2vw;
+            color: gray;
         }
     </style>
 </head>
 <body>
+    <div class="heading" id="sectionHeading">Home Page</div>
 
-    <div id="typewriter"></div>
-    <input type="text" id="nameInput" placeholder="Enter your name" />
-    <div id="greeting"></div>
-    <div id="loading"></div>
+    <div class="hamburger" id="hamburger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <div class="menu-container" id="menu-container">
+        <ul class="menu-list" id="menu-list">
+            <li><a href="#" id="homeButton">Home</a></li>
+            <li><a href="#" id="profileButton">Profile</a></li>
+            <li><a href="#" id="creditsButton">Credits</a></li>
+            <li><a href="#" id="askMeButton">Ask Me</a></li>
+        </ul>
+    </div>
+
+    <div class="section show" id="homeSection"></div>
+    
+    <div class="section" id="profileSection">
+        <div class="profile">
+            <h2>User Profile</h2>
+            <div class="profile-info" id="userName">Name: No Name</div>
+            <div class="profile-info" id="userBirthday">Birthday: Not set</div>
+            <div class="profile-info" id="userInfo">Info: No information available</div>
+            <div class="edit-icon" id="editProfile">Edit Profile</div>
+        </div>
+    </div>
+    
+    <div class="section" id="creditsSection"></div>
+    <div class="section" id="askMeSection"></div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3>Edit Profile</h3>
+            <input type="text" id="editNameInput" placeholder="Enter your name" />
+            <input type="date" id="editBirthdayInput" />
+            <input type="text" id="editInfoInput" placeholder="Enter additional info" />
+            <button id="saveButton">Save</button>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <div class="footer">Created By: Jhon Andrew Brita</div>
 
     <script>
-        const textArray = ["Hello", "What is your name?"];
-        let currentTextIndex = 0;
-        let currentCharIndex = 0;
-        const typewriterElement = document.getElementById('typewriter');
-        const nameInput = document.getElementById('nameInput');
-        const greetingElement = document.getElementById('greeting');
-        const loadingElement = document.getElementById('loading');
-        let typingInterval;
+        const hamburger = document.getElementById('hamburger');
+        const menuContainer = document.getElementById('menu-container');
+        const profileButton = document.getElementById('profileButton');
+        const homeButton = document.getElementById('homeButton');
+        const profileSection = document.getElementById('profileSection');
+        const homeSection = document.getElementById('homeSection');
+        const editProfile = document.getElementById('editProfile');
+        const modal = document.getElementById('modal');
+        const saveButton = document.getElementById('saveButton');
+        const closeModal = document.getElementById('closeModal');
+        const editNameInput = document.getElementById('editNameInput');
+        const editBirthdayInput = document.getElementById('editBirthdayInput');
+        const editInfoInput = document.getElementById('editInfoInput');
 
-        function type() {
-            typingInterval = setInterval(() => {
-                if (currentCharIndex < textArray[currentTextIndex].length) {
-                    typewriterElement.innerHTML += textArray[currentTextIndex].charAt(currentCharIndex);
-                    currentCharIndex++;
-                } else {
-                    clearInterval(typingInterval);
-                    setTimeout(erase, 1000); // Pause before erasing
-                }
-            }, 100); // Faster typing speed
-        }
+        hamburger.addEventListener('click', () => {
+            menuContainer.classList.toggle('show');
+        });
 
-        function erase() {
-            typingInterval = setInterval(() => {
-                if (currentCharIndex > 0) {
-                    typewriterElement.innerHTML = textArray[currentTextIndex].substring(0, currentCharIndex - 1);
-                    currentCharIndex--;
-                } else {
-                    clearInterval(typingInterval);
-                    if (currentTextIndex === 1) {
-                        nameInput.style.display = 'block';
-                        nameInput.focus();
-                        typewriterElement.innerHTML = ''; // Clear typewriter text
-                    }
-                    currentTextIndex++;
-                    setTimeout(type, 500); // Pause before typing next text
-                }
-            }, 70); // Faster erase speed
-        }
+        homeButton.addEventListener('click', () => {
+            homeSection.classList.add('show');
+            profileSection.classList.remove('show');
+            menuContainer.classList.remove('show');
+        });
 
-        let dotCount = 0;
-        let loadingInterval;
+        profileButton.addEventListener('click', () => {
+            profileSection.classList.add('show');
+            homeSection.classList.remove('show');
+            menuContainer.classList.remove('show');
+        });
 
-        function startLoading() {
-            loadingElement.style.opacity = '1'; // Fade in
-            loadingElement.style.transform = 'translateY(0)'; // Move down into view
-            loadingElement.innerHTML = 'Getting Information';
-            loadingInterval = setInterval(() => {
-                dotCount = (dotCount + 1) % 4; // Reset after 3 dots
-                loadingElement.innerHTML = 'Getting Information' + '.'.repeat(dotCount);
-            }, 500); // Add a dot every 500ms
+        editProfile.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
 
-            // Redirect after 5 seconds
-            setTimeout(() => {
-                clearInterval(loadingInterval);
-                window.location.href = "https://example.com"; // Change this to your desired URL
-            }, 5000);
-        }
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
 
-        function greetUser(name) {
-            const greetingText = `Hello ${name}`;
-            greetingElement.innerHTML = ''; // Clear previous greeting
-            currentCharIndex = 0;
+        saveButton.addEventListener('click', () => {
+            const name = editNameInput.value || 'No Name';
+            const birthday = editBirthdayInput.value ? new Date(editBirthdayInput.value).toLocaleDateString() : 'Not set';
+            const info = editInfoInput.value || 'No information available';
 
-            // Type out the greeting
-            const typingInterval = setInterval(() => {
-                if (currentCharIndex < greetingText.length) {
-                    greetingElement.innerHTML += greetingText.charAt(currentCharIndex);
-                    currentCharIndex++;
-                } else {
-                    clearInterval(typingInterval);
-                    // Start loading after greeting
-                    startLoading();
-                }
-            }, 100); // Faster typing speed
+            document.getElementById('userName').innerText = `Name: ${name}`;
+            document.getElementById('userBirthday').innerText = `Birthday: ${birthday}`;
+            document.getElementById('userInfo').innerText = `Info: ${info}`;
             
-            // Hide the typewriter and input after greeting is done
-            setTimeout(() => {
-                typewriterElement.style.display = 'none';
-                nameInput.style.display = 'none';
-            }, greetingText.length * 100 + 500); // Wait for greeting to finish
-        }
-
-        // Start the typewriter effect on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(type, 500); // Initial delay
-            nameInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    const name = nameInput.value;
-                    nameInput.style.display = 'none';
-                    greetUser(name);
-                }
-            });
+            modal.style.display = 'none';
         });
     </script>
-
 </body>
 </html>
